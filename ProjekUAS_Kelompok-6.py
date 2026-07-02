@@ -329,7 +329,7 @@ class SistemParkir:
                 self.riwayat.update_transaksi(
                     plat_nomor,
                     jam_keluar,
-                    f"{durasi_menit:.2f} Menit",
+                    f"{durasi_menit:.2f} Jam",
                     biaya_total
                 )
                 

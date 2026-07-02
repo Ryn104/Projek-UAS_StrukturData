@@ -1,18 +1,26 @@
-# Berfungsi untuk mengatur waktu dan tanggal, serta menghitung durasi parkir
-import time
-# Berfungsi untuk mengatur path file dan direktori
-import os
-# Berfungsi untuk membuat antrian kendaraan yang masuk ke parkir
-from collections import deque
+import time # Berfungsi untuk mengatur waktu dan tanggal, serta menghitung durasi parkir
+import os # Berfungsi untuk mengatur path file dan direktori
+from collections import deque # Berfungsi untuk membuat antrian kendaraan yang masuk ke parkir
 
 class NodeRiwayat:
-    # Membuat node untuk linked list riwayat transaksi parkir
-    def __init__(self, jenis, plat_nomor, durasi, biaya):
+    def __init__(self, jenis, plat_nomor, waktu_masuk):
         self.jenis = jenis
         self.plat_nomor = plat_nomor
-        self.durasi = durasi
-        self.biaya = biaya
+        self.waktu_masuk = waktu_masuk
+        self.waktu_keluar = "-"
+        self.durasi = "-"
+        self.biaya = "-"
+        self.status = "Parkir"
         self.next = None
+
+# class NodeRiwayat:
+#     # Membuat node untuk linked list riwayat transaksi parkir
+#     def __init__(self, jenis, plat_nomor, durasi, biaya):
+#         self.jenis = jenis
+#         self.plat_nomor = plat_nomor
+#         self.durasi = durasi
+#         self.biaya = biaya
+#         self.next = None
 
 class LinkedListRiwayat:
     # Inisialisasi linked list untuk menyimpan riwayat transaksi parkir
@@ -21,58 +29,107 @@ class LinkedListRiwayat:
         self.total_pendapatan = 0
         self.total_kendaraan = 0
 
-    # Menambahkan transaksi baru ke dalam linked list
-    def tambah_transaksi(self, jenis, plat_nomor, durasi, biaya):
-        node_baru = NodeRiwayat(jenis, plat_nomor, durasi, biaya)
-        if not self.head:
+    def tambah_transaksi(self, jenis, plat_nomor, waktu_masuk):
+        node_baru = NodeRiwayat(jenis, plat_nomor, waktu_masuk)
+
+        if self.head is None:
             self.head = node_baru
         else:
             current = self.head
             while current.next:
                 current = current.next
             current.next = node_baru
-        self.total_pendapatan += biaya
-        self.total_kendaraan += 1
+
+    # Menambahkan transaksi baru ke dalam linked list
+    # def tambah_transaksi(self, jenis, plat_nomor, durasi, biaya):
+    #     node_baru = NodeRiwayat(jenis, plat_nomor, durasi, biaya)
+    #     if not self.head:
+    #         self.head = node_baru
+    #     else:
+    #         current = self.head
+    #         while current.next:
+    #             current = current.next
+    #         current.next = node_baru
+    #     self.total_pendapatan += biaya
+    #     self.total_kendaraan += 1
 
     # Menampilkan riwayat transaksi parkir dalam format tabel
     def tampilkan_riwayat(self):
         print("\n" + "═"*59)
         print("              RIWAYAT TRANSAKSI PARKIR HARIAN")
         print("═"*59 + "\n")
-        print("╒════╤═══════╤════════════╤══════════════╤════════════════╕")
-        print("│ No │ Jenis │ Plat Nomor │ Durasi (Jam) │ Biaya          │")
+        # print("╒════╤═══════╤════════════╤══════════════╤════════════════╕")
+        # print("│ No │ Jenis │ Plat Nomor │ Durasi (Jam) │ Biaya          │")
+
+        # no = 1
+        # current = self.head
+        # total_motor = 0
+        # total_mobil = 0 
+        # while current:
+        #     if current.jenis == "Mobil":
+        #         total_mobil += 1
+        #     else:
+        #         total_motor += 1
+        #     if no == 1:
+        #         print("╞════╪═══════╪════════════╪══════════════╪════════════════╡")
+        #     else:
+        #         print("├────┼───────┼────────────┼──────────────┼────────────────┤")
+        #     print(
+        #         f"│ {no:<2} "
+        #         f"│ {current.jenis:<5} "
+        #         f"│ {current.plat_nomor:<10} "
+        #         f"│ {current.durasi:<12.2f} "
+        #         f"│ Rp{current.biaya:<13.2f}│"
+        #         # f"│ {'Rp' + format(current.biaya, ',.2f').replace(',', 'X').replace('.', ',').replace('X', '.'): <15}│"
+        #     )
+        #     no += 1
+        #     current = current.next
+        
+        # print("╞════╧═══════╧════════════╧══════════════╪════════════════╡")
+        # print(f"│ Total Motor                            │ {total_motor:<14} │")
+        # print("├────────────────────────────────────────┼────────────────┤")
+        # print(f"│ Total Mobil                            │ {total_mobil:<14} │")
+        # print("├────────────────────────────────────────┼────────────────┤")
+        # print(f"│ Total Pendapatan                       │ Rp{self.total_pendapatan:<13.2f}│")
+        # print("╘════════════════════════════════════════╧════════════════╛\n")
+
+        print("╒════╤═══════╤════════════╤══════════╤══════════╤════════════╤═══════════╤═══════════════╕")
+        print("│ No │ Jenis │ Plat Nomor │ Masuk    │ Keluar   │ Durasi     │ Biaya     │ Status        │")
 
         no = 1
         current = self.head
         total_motor = 0
-        total_mobil = 0 
+        total_mobil = 0
+
         while current:
+
             if current.jenis == "Mobil":
                 total_mobil += 1
             else:
                 total_motor += 1
+
             if no == 1:
-                print("╞════╪═══════╪════════════╪══════════════╪════════════════╡")
+                print("╞════╪═══════╪════════════╪══════════╪══════════╪════════════╪═══════════╪═══════════════╡")
             else:
-                print("├────┼───────┼────────────┼──────────────┼────────────────┤")
+                print("├────┼───────┼────────────┼──────────┼──────────┼────────────┼───────────┼───────────────┤")
+
+            biaya = "-" if current.biaya == "-" else f"Rp{current.biaya:.0f}"
+
             print(
                 f"│ {no:<2} "
                 f"│ {current.jenis:<5} "
                 f"│ {current.plat_nomor:<10} "
-                f"│ {current.durasi:<12.2f} "
-                f"│ Rp{current.biaya:<13.2f}│"
-                # f"│ {'Rp' + format(current.biaya, ',.2f').replace(',', 'X').replace('.', ',').replace('X', '.'): <15}│"
+                f"│ {current.waktu_masuk:<8} "
+                f"│ {current.waktu_keluar:<8} "
+                f"│ {current.durasi:<10} "
+                f"│ {biaya:<9} "
+                f"│ {current.status:<13} │"
             )
+
             no += 1
             current = current.next
 
-        print("╞════╧═══════╧════════════╧══════════════╪════════════════╡")
-        print(f"│ Total Motor                            │ {total_motor:<14} │")
-        print("├────────────────────────────────────────┼────────────────┤")
-        print(f"│ Total Mobil                            │ {total_mobil:<14} │")
-        print("├────────────────────────────────────────┼────────────────┤")
-        print(f"│ Total Pendapatan                       │ Rp{self.total_pendapatan:<13.2f}│")
-        print("╘════════════════════════════════════════╧════════════════╛\n")
+        print("╘════╧═══════╧════════════╧══════════╧══════════╧════════════╧═══════════╧═══════════════╛")
     
     # Mengunduh riwayat transaksi parkir ke dalam file teks
     def unduh_riwayat(self):
@@ -126,6 +183,22 @@ class LinkedListRiwayat:
         except Exception as e:
             print(f"\n[GAGAL] {e}")
 
+    def update_transaksi(self, plat_nomor, waktu_keluar, durasi, biaya):
+        current = self.head
+
+        while current:
+            if current.plat_nomor == plat_nomor:
+                current.waktu_keluar = waktu_keluar
+                current.durasi = durasi
+                current.biaya = biaya
+                current.status = "Selesai"
+
+                self.total_pendapatan += biaya
+                self.total_kendaraan += 1
+                return
+
+            current = current.next
+
 class SistemParkir:
     # Inisialisasi sistem parkir dengan jumlah lantai, kapasitas per lantai, dan tarif per jam untuk mobil dan motor
     def __init__(self, jumlah_lantai, kapasitas_per_lantai, tarif_per_jam_mb, tarif_per_jam_mt):
@@ -143,12 +216,16 @@ class SistemParkir:
     def kendaraan_datang_mb(self, plat_nomor):
         waktu_datang = time.time()
         self.antrian_masuk.append({'plat': plat_nomor, 'jenis': 'MB', 'waktu_masuk': waktu_datang})
+        jam_masuk = time.strftime("%H:%M:%S", time.localtime(waktu_datang))
+        self.riwayat.tambah_transaksi("Mobil", plat_nomor, jam_masuk)
         print(f"\n[+] Mobil {plat_nomor} masuk ke antrian.")
 
     # Menambahkan kendaraan motor ke antrian masuk
     def kendaraan_datang_mt(self, plat_nomor):
         waktu_datang = time.time() 
         self.antrian_masuk.append({'plat': plat_nomor, 'jenis': 'MT', 'waktu_masuk': waktu_datang})
+        jam_masuk = time.strftime("%H:%M:%S", time.localtime(waktu_datang))
+        self.riwayat.tambah_transaksi("Motor", plat_nomor, jam_masuk)
         print(f"\n[+] Motor {plat_nomor} masuk ke antrian.")
 
     # Memproses antrian masuk dan menempatkan kendaraan ke lantai parkir yang tersedia
@@ -196,7 +273,16 @@ class SistemParkir:
                 print(f"    Durasi Parkir : {durasi_menit:.2f} Jam")
                 print(f"    Total Biaya   : Rp{biaya_total:.2f}")
                 
-                self.riwayat.tambah_transaksi("Mobil", plat_nomor, durasi_menit, biaya_total)
+                # self.riwayat.tambah_transaksi("Mobil", plat_nomor, durasi_menit, biaya_total)
+
+                jam_keluar = time.strftime("%H:%M:%S", time.localtime(waktu_keluar))
+
+                self.riwayat.update_transaksi(
+                    plat_nomor,
+                    jam_keluar,
+                    f"{durasi_menit:.2f} Menit",
+                    biaya_total
+                )
                 
                 while stack_sementara:
                     mobil_kembali = stack_sementara.pop()
@@ -236,7 +322,16 @@ class SistemParkir:
                 print(f"    Durasi Parkir : {durasi_menit:.2f} Jam")
                 print(f"    Total Biaya   : Rp{biaya_total:.2f}")
                 
-                self.riwayat.tambah_transaksi("Motor", plat_nomor, durasi_menit, biaya_total)
+                # self.riwayat.tambah_transaksi("Motor", plat_nomor, durasi_menit, biaya_total)
+
+                jam_keluar = time.strftime("%H:%M:%S", time.localtime(waktu_keluar))
+
+                self.riwayat.update_transaksi(
+                    plat_nomor,
+                    jam_keluar,
+                    f"{durasi_menit:.2f} Menit",
+                    biaya_total
+                )
                 
                 while stack_sementara:
                     motor_kembali = stack_sementara.pop()

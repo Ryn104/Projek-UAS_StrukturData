@@ -1,8 +1,12 @@
+# Berfungsi untuk mengatur waktu dan tanggal, serta menghitung durasi parkir
 import time
+# Berfungsi untuk mengatur path file dan direktori
 import os
+# Berfungsi untuk membuat antrian kendaraan yang masuk ke parkir
 from collections import deque
 
 class NodeRiwayat:
+    # Membuat node untuk linked list riwayat transaksi parkir
     def __init__(self, jenis, plat_nomor, durasi, biaya):
         self.jenis = jenis
         self.plat_nomor = plat_nomor
@@ -11,11 +15,13 @@ class NodeRiwayat:
         self.next = None
 
 class LinkedListRiwayat:
+    # Inisialisasi linked list untuk menyimpan riwayat transaksi parkir
     def __init__(self):
         self.head = None
         self.total_pendapatan = 0
         self.total_kendaraan = 0
 
+    # Menambahkan transaksi baru ke dalam linked list
     def tambah_transaksi(self, jenis, plat_nomor, durasi, biaya):
         node_baru = NodeRiwayat(jenis, plat_nomor, durasi, biaya)
         if not self.head:
@@ -28,6 +34,7 @@ class LinkedListRiwayat:
         self.total_pendapatan += biaya
         self.total_kendaraan += 1
 
+    # Menampilkan riwayat transaksi parkir dalam format tabel
     def tampilkan_riwayat(self):
         print("\n" + "═"*59)
         print("              RIWAYAT TRANSAKSI PARKIR HARIAN")
@@ -67,7 +74,7 @@ class LinkedListRiwayat:
         print(f"│ Total Pendapatan                       │ Rp{self.total_pendapatan:<13.2f}│")
         print("╘════════════════════════════════════════╧════════════════╛\n")
     
-        
+    # Mengunduh riwayat transaksi parkir ke dalam file teks
     def unduh_riwayat(self):
         nama_file = f"Laporan_Parkir_{time.strftime('%Y-%m-%d')}.txt"
         lokasi_script = os.path.dirname(os.path.abspath(__file__))
@@ -120,6 +127,7 @@ class LinkedListRiwayat:
             print(f"\n[GAGAL] {e}")
 
 class SistemParkir:
+    # Inisialisasi sistem parkir dengan jumlah lantai, kapasitas per lantai, dan tarif per jam untuk mobil dan motor
     def __init__(self, jumlah_lantai, kapasitas_per_lantai, tarif_per_jam_mb, tarif_per_jam_mt):
         self.lantai_parkir = [[] for _ in range(jumlah_lantai)] 
         self.kapasitas_lantai = kapasitas_per_lantai
@@ -131,16 +139,19 @@ class SistemParkir:
         self.tarif_mb = tarif_per_jam_mb
         self.tarif_mt = tarif_per_jam_mt
 
+    # Menambahkan kendaraan mobil ke antrian masuk
     def kendaraan_datang_mb(self, plat_nomor):
         waktu_datang = time.time()
         self.antrian_masuk.append({'plat': plat_nomor, 'jenis': 'MB', 'waktu_masuk': waktu_datang})
         print(f"\n[+] Mobil {plat_nomor} masuk ke antrian.")
 
+    # Menambahkan kendaraan motor ke antrian masuk
     def kendaraan_datang_mt(self, plat_nomor):
         waktu_datang = time.time() 
         self.antrian_masuk.append({'plat': plat_nomor, 'jenis': 'MT', 'waktu_masuk': waktu_datang})
         print(f"\n[+] Motor {plat_nomor} masuk ke antrian.")
 
+    # Memproses antrian masuk dan menempatkan kendaraan ke lantai parkir yang tersedia
     def proses_antrian(self):
         if not self.antrian_masuk:
             print("\n[-] Tidak ada kendaraan di antrian.")
@@ -155,6 +166,7 @@ class SistemParkir:
         
         print("\n[!] Seluruh lantai parkir penuh! Kendaraan tertahan di antrian.")
 
+    # Mengeluarkan kendaraan mobil dari parkir berdasarkan plat nomor, menggunakan sistem LIFO (Last In First Out)
     def kendaraan_keluar_mb(self, plat_nomor):
         for i in range(len(self.lantai_parkir)):
             lantai = self.lantai_parkir[i]
@@ -194,6 +206,7 @@ class SistemParkir:
 
         print(f"\n[-] Kendaraan dengan plat {plat_nomor} tidak ditemukan di area parkir.")
     
+    # Mengeluarkan kendaraan motor dari parkir berdasarkan plat nomor, menggunakan sistem LIFO (Last In First Out)
     def kendaraan_keluar_mt(self, plat_nomor):
         for i in range(len(self.lantai_parkir)):
             lantai = self.lantai_parkir[i]
@@ -233,16 +246,30 @@ class SistemParkir:
 
         print(f"\n[-] Kendaraan dengan plat {plat_nomor} tidak ditemukan di area parkir.")
 
+    # Menampilkan laporan real-time kapasitas parkir dan statistik kendaraan yang sedang menunggu di antrian
     def laporan_realtime(self):
         print("\n" + "═"*64)
         print("         LAPORAN KAPASITAS PARKIR REAL-TIME & STATISTIK")
         print("═"*64)
         
-        # print(f"[STATUS ANTRIAN] Menunggu: {len(self.antrian_masuk)} kendaraan")
+        print(f"[STATUS ANTRIAN] Menunggu: [{len(self.antrian_masuk)}] kendaraan")
         if self.antrian_masuk:
-            print(f"  Antrian: {[m['plat'] for m in self.antrian_masuk]}")
+            print("╔════╦════════════╦═══════╦═════════════╗")
+            print("║ No ║ Plat Nomor ║ Jenis ║ Waktu Masuk ║")
+            for i in range(len(self.antrian_masuk)):
+                kendaraan = self.antrian_masuk[i]
+                jam_masuk = time.strftime("%H:%M", time.localtime(kendaraan["waktu_masuk"]))
+                if i == 0:
+                    print("╠════╬════════════╬═══════╬═════════════╣")
+                else:
+                    print("╟────╫────────────╫───────╫─────────────╢")
+                print(f"║ {i+1:<2} ║ {kendaraan['plat']:<10} ║ {'Mobil' if kendaraan['jenis']=='MB' else 'Motor'} ║ {jam_masuk:<11} ║")
+            # print(f"  Antrian: {[m['plat'] for m in self.antrian_masuk]}")
+            print("╚════╩════════════╩═══════╩═════════════╝")
         
-        print("\n[STATUS LANTAI PARKIR]")
+        isi = len(self.lantai_parkir[0]) + len(self.lantai_parkir[1]) + len(self.lantai_parkir[2])
+        kapasitas_total = self.kapasitas_lantai * len(self.lantai_parkir)
+        print(f"\n[STATUS PARKIR] Terisi: [{isi}/{kapasitas_total}] kendaraan")
         # print("\n[STATUS LANTAI PARKIR (Kiri=Dalam, Kanan=Luar/Akses Keluar)]")
         print("╔═════════╦═════════════════╦═════════════════╦═════════════════╗")
         print(f"║ {'Lantai':<8}║     {'Slot 1':<11} ║     {'Slot 2':<11} ║     {'Slot 3':<11} ║")
@@ -251,13 +278,13 @@ class SistemParkir:
                 print("╠═════════╬═════════════════╬═════════════════╬═════════════════╣")
             else:
                 print("╟─────────╫─────────────────╫─────────────────╫─────────────────╢")
-            isi = len(self.lantai_parkir[i])
-            sisa = self.kapasitas_lantai - isi
             plat_list = [f"{m['plat']} [{m['jenis']}]" for m in self.lantai_parkir[i]]
             # print(f"  Lantai {i+1}: {isi}/{self.kapasitas_lantai} terisi (Sisa: {sisa}) -> {plat_list}")
             print(f"║    {i+1:<5}║ {plat_list[0] if len(plat_list) > 0 else '[Kosong]':<15} ║ {plat_list[1] if len(plat_list) > 1 else '[Kosong]':<15} ║ {plat_list[2] if len(plat_list) > 2 else '[Kosong]':<15} ║")
         print("╚═════════╩═════════════════╩═════════════════╩═════════════════╝")
         input("\n»Tekan Enter untuk kembali ke menu utama...")
+
+    # Menampilkan laporan riwayat transaksi parkir yang telah disimpan dalam linked list
     def laporan_riwayat(self):
         self.riwayat.tampilkan_riwayat()
 
@@ -266,6 +293,7 @@ class SistemParkir:
 def main():
     parkir = SistemParkir(jumlah_lantai=3, kapasitas_per_lantai=3, tarif_per_jam_mb=5000, tarif_per_jam_mt=2000)
     
+    # Data dummy untuk 
     parkir.kendaraan_datang_mt("AB123CD")
     parkir.proses_antrian()
     parkir.kendaraan_datang_mb("XYZ789")
@@ -273,6 +301,7 @@ def main():
     parkir.kendaraan_keluar_mt("AB123CD")
     parkir.kendaraan_keluar_mb("XYZ789")
 
+    # Menu utama untuk interaksi pengguna
     while True:
         print("\n" + "═"*32)
         print("          MENU PARKIR")
@@ -284,14 +313,16 @@ def main():
         print("├───┼──────────────────────────┤")
         print("│ 2 │ Mobil                    │")
         print("├───┼──────────────────────────┤")
-        print("│ 3 │ Lihat Laporan Real-Time  │")
+        print("│ 3 │ Proses Antrian           │")
         print("├───┼──────────────────────────┤")
-        print("│ 4 │ Lihat Riwayat            │")
+        print("│ 4 │ Lihat Laporan Real-Time  │")
+        print("├───┼──────────────────────────┤")
+        print("│ 5 │ Lihat Riwayat            │")
         print("├───┼──────────────────────────┤")
         print("│ 0 │ Keluar Program           │")
         print("╘═══╧══════════════════════════╛\n")
 
-        pilihan = input("»Pilih menu (0-4): ")
+        pilihan = input("»Pilih menu (0-5): ")
         
         if pilihan == '1':
             print("\n" + "═"*32)
@@ -310,7 +341,6 @@ def main():
             if pilihan == '1':
                 plat = input("»Masukkan Plat Nomor Motor: ").upper()
                 parkir.kendaraan_datang_mt(plat)
-                parkir.proses_antrian()
             elif pilihan == '2':
                 plat = input("»Masukkan Plat Nomor Motor yang akan keluar: ").upper()
                 parkir.kendaraan_keluar_mt(plat)
@@ -335,7 +365,6 @@ def main():
             if pilihan == '1':
                 plat = input("»Masukkan Plat Nomor Mobil: ").upper()
                 parkir.kendaraan_datang_mb(plat)
-                parkir.proses_antrian()
             elif pilihan == '2':
                 plat = input("»Masukkan Plat Nomor Mobil yang akan keluar: ").upper()
                 parkir.kendaraan_keluar_mb(plat)
@@ -344,8 +373,10 @@ def main():
             else:
                 print("Pilihan tidak valid!")
         elif pilihan == '3':
-            parkir.laporan_realtime()
+            parkir.proses_antrian()
         elif pilihan == '4':
+            parkir.laporan_realtime()
+        elif pilihan == '5':
             parkir.laporan_riwayat()
             unduh = input("»Unduh Laporan Riwayat (Y/N): ").upper()
             if unduh == 'Y':

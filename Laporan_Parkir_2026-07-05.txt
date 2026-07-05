@@ -4,7 +4,8 @@
 
 No   | Jenis  | Plat Nomor   | Masuk    | Keluar   | Durasi     | Biaya      | Status    
 ----------------------------------------------------------------------------------------
-1    | Mobil  | D 1234 AAM   | 19:06:26 | 19:07:16 | 0.82 Jam   | Rp5000     | Selesai   
-2    | Mobil  | F 9009       | 19:06:42 | 19:07:39 | 0.93 Jam   | Rp5000     | Selesai   
+1    | Mobil  | D 1234 A     | 21:48:02 | -        | -          | -          | Parkir    
 ----------------------------------------------------------------------------------------
-Total Pendapatan : Rp10000.00
+Total Mobil Parkir : 1
+Total Motor Parkir : 0
+Total Pendapatan : Rp0.00

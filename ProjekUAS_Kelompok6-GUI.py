@@ -3,10 +3,6 @@ import os
 import tkinter as tk
 from tkinter import ttk, messagebox
 
-# ==========================================
-# STRUKTUR DATA & LOGIKA INTI (Tetap Sama)
-# ==========================================
-
 class NodeRiwayat:
     def __init__(self, jenis, plat_nomor, waktu_masuk):
         self.jenis = jenis
@@ -155,17 +151,14 @@ class SistemParkir:
 
         return False, None
 
-# ==========================================
-# ANTARMUKA GRAFIS (GUI) - BERGAYA DASHBOARD
-# ==========================================
-
+# GUI
 class AplikasiParkirGUI(tk.Tk):
     def __init__(self):
         super().__init__()
         self.title("Smart Parking System")
         self.geometry("1300x768")
-        self.configure(bg="#F3F4F6") # Background abu-abu terang
-        self.state('zoomed') # Maximize window
+        self.configure(bg="#F3F4F6") 
+        self.state('zoomed')
 
         self.parkir = SistemParkir(jumlah_lantai=3, kapasitas_per_lantai=3, tarif_per_jam_mb=5000, tarif_per_jam_mt=2000)
 

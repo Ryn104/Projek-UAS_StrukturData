@@ -52,9 +52,8 @@ class LinkedListRiwayat:
         total_motor = 0
         current = self.head
         while current:
-            if current.status == "Parkir":
-                if current.jenis == "Mobil": total_mobil += 1
-                else: total_motor += 1
+            if current.jenis == "Mobil": total_mobil += 1
+            else: total_motor += 1
             current = current.next
         return total_mobil, total_motor
     
@@ -278,6 +277,8 @@ class AplikasiParkirGUI(tk.Tk):
 
         self.parkir = SistemParkir(jumlah_lantai=3, kapasitas_per_lantai=3,
                                     tarif_per_jam_mb=5000, tarif_per_jam_mt=2000)
+        # self.parkir = SistemParkir(jumlah_lantai=3, kapasitas_per_lantai=3,
+        #                             tarif_per_jam_mb=5000, tarif_per_jam_mt=2000)
 
         self.style = ttk.Style()
         self.style.theme_use('clam')
@@ -580,7 +581,7 @@ class AplikasiParkirGUI(tk.Tk):
     def action_masuk(self):
         plat = self.ent_masuk.get().strip().upper()
         if not plat:
-            messagebox.showwarning("Peringatan", "Plat nomor kosong!")
+            messagebox.showwarning("Peringatan", "Mohon masukkan plat nomor kendaraan yang ingin dimasukkan.")
             return
         self.parkir.kendaraan_datang(plat, self.var_jenis.get())
         self.ent_masuk.delete(0, tk.END)
@@ -597,7 +598,7 @@ class AplikasiParkirGUI(tk.Tk):
     def action_keluar(self):
         plat = self.ent_keluar.get().strip().upper()
         if not plat:
-            messagebox.showwarning("Peringatan", "Plat nomor kosong!")
+            messagebox.showwarning("Peringatan", "Mohon masukkan plat nomor kendaraan yang ingin dikeluarkan.")
             return
         sukses, data = self.parkir.kendaraan_keluar(plat)
         if sukses:

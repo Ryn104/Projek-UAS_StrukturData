@@ -139,8 +139,6 @@ class SistemParkir:
         for i in range(len(self.lantai_parkir)):
             if len(self.lantai_parkir[i]) < self.kapasitas_lantai:
                 kendaraan = self.antrian_masuk.popleft()
-
-                # Waktu mulai parkir = saat diproses
                 kendaraan["waktu_masuk"] = time.time()
 
                 self.lantai_parkir[i].append(kendaraan)

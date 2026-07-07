@@ -63,5 +63,5 @@ python ProjekUAS_Kelompok6-GUI.py
 - Kurang dari 1 jam dikenakan tarif minimum.
 - Tambahan 50% tarif jika sisa waktu lebih dari 30 menit.
 
-## 📸 Screenshot
+## Screenshot
 ![Dashboard](images/dashboard.png)

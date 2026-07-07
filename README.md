@@ -36,7 +36,7 @@ cd Sistem-Parkir-Otomatis
 ```
 3. Jalankan program
 ```bash
-python ProjekUAS_Kelompok6-GUI.py
+python Projek_SistemParkirOtomatis_UAS-StrukturData_Kelompok-6.py
 ```
 
 ## Alur Program

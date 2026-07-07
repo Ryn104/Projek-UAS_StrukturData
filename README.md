@@ -28,7 +28,7 @@ Sistem Parkir Otomatis berbasis Python dengan antarmuka Tkinter yang menerapkan 
 ## Cara Menjalankan
 1. Clone repository
 ```bash
-git clone https://github.com/username/Smart-Parking-System.git
+git clone https://github.com/Ryn104/Projek-UAS_StrukturData.git
 ```
 2. Masuk ke folder project
 ```bash

@@ -169,24 +169,22 @@ class SistemParkir:
                 k_keluar = lantai.pop()
                 waktu_keluar = time.time()
                 durasi_detik = max(1, int(waktu_keluar - k_keluar['waktu_masuk']))
-                jam = durasi_detik // 60  
-                menit = durasi_detik % 60   
+                menit = durasi_detik // 60  
+                jam = menit // 60
+                menit = menit % 60   
                 durasi = f"{jam} Jam {menit} Menit"
-                # durasi_menit = durasi_detik / 60
+                # jam = durasi_detik // 60  
+                # menit = durasi_detik % 60   
+                # durasi = f"{jam} Jam {menit} Menit"
 
                 tarif = self.tarif_mb if k_keluar['jenis'] == 'Mobil' else self.tarif_mt
                 if jam < 1:
                      biaya_total = tarif
                 else:
                     biaya_total = tarif * jam + ((tarif * 0.5) if menit > 30 else 0) 
-                # if durasi_menit <= 1:
-                #     biaya_total = tarif
-                # else:
-                #     biaya_total = int(durasi_menit+1) * tarif
 
                 jam_keluar = time.strftime("%H:%M:%S", time.localtime(waktu_keluar))
                 _, data_transaksi = self.riwayat.update_transaksi(plat_nomor, jam_keluar, durasi, biaya_total)
-                # _, data_transaksi = self.riwayat.update_transaksi(plat_nomor, jam_keluar, f"{durasi_menit:.2f} Jam", biaya_total)
 
                 while stack_sementara:
                     lantai.append(stack_sementara.pop())

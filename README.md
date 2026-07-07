@@ -32,7 +32,7 @@ git clone https://github.com/Ryn104/Projek-UAS_StrukturData.git
 ```
 2. Masuk ke folder project
 ```bash
-cd Sistem-Parkir-Otomatis
+cd Projek-UAS_StrukturData
 ```
 3. Jalankan program
 ```bash

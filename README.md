@@ -36,9 +36,8 @@ cd Sistem-Parkir-Otomatis
 ```
 3. Jalankan program
 ```bash
-python main.py
+python ProjekUAS_Kelompok6-GUI.py
 ```
-> **Catatan:** Ganti `main.py` dengan nama file utama project apabila berbeda.
 
 ## Alur Program
 ### Kendaraan Masuk

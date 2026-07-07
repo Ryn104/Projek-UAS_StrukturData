@@ -64,24 +64,24 @@ class LinkedListRiwayat:
         file_path = os.path.join(lokasi_script, nama_file)
         try:
             with open(file_path, "w", encoding="utf-8") as file:
-                file.write("="*88 + "\n")
+                file.write("="*90 + "\n")
                 file.write("                             RIWAYAT TRANSAKSI PARKIR HARIAN\n")
-                file.write("="*88 + "\n\n")
+                file.write("="*90 + "\n\n")
                 data = self.get_semua_data()
                 total_mobil = 0
                 total_motor = 0
                 if not data:
                     file.write("Belum ada riwayat transaksi.\n")
                 else:
-                    file.write(f"{'No':<4} | {'Jenis':<6} | {'Plat Nomor':<12} | {'Masuk':<8} | {'Keluar':<8} | {'Durasi':<10} | {'Biaya':<10} | {'Status':<10}\n")
-                    file.write("-" * 88 + "\n")
+                    file.write(f" {'No':<2} | {'Jenis':<6} | {'Plat Nomor':<12} | {'Masuk':<8} | {'Keluar':<8} | {'Durasi':<14} | {'Biaya':<10} | {'Status':<10}\n")
+                    file.write("-" * 90 + "\n")
                     for baris in data:
                         if baris[1] == "Mobil":
                             total_mobil += 1
                         else:
                             total_motor += 1
-                        file.write(f"{baris[0]:<4} | {baris[1]:<6} | {baris[2]:<12} | {baris[3]:<8} | {baris[4]:<8} | {baris[5]:<10} | {baris[6]:<10} | {baris[7]:<10}\n")
-                    file.write("-" * 88 + "\n")
+                        file.write(f" {baris[0]:<2} | {baris[1]:<6} | {baris[2]:<12} | {baris[3]:<8} | {baris[4]:<8} | {baris[5]:<14} | {baris[6]:<10} | {baris[7]:<10}\n")
+                    file.write("-" * 90 + "\n")
                     file.write(f"Total Mobil Parkir : {total_mobil}\n")
                     file.write(f"Total Motor Parkir : {total_motor}\n")
                     file.write(f"Total Pendapatan : Rp{self.total_pendapatan:.2f}\n")
@@ -169,16 +169,24 @@ class SistemParkir:
                 k_keluar = lantai.pop()
                 waktu_keluar = time.time()
                 durasi_detik = max(1, int(waktu_keluar - k_keluar['waktu_masuk']))
-                durasi_menit = durasi_detik / 60
+                jam = durasi_detik // 60  
+                menit = durasi_detik % 60   
+                durasi = f"{jam} Jam {menit} Menit"
+                # durasi_menit = durasi_detik / 60
 
                 tarif = self.tarif_mb if k_keluar['jenis'] == 'Mobil' else self.tarif_mt
-                if durasi_menit <= 1:
-                    biaya_total = tarif
+                if jam < 1:
+                     biaya_total = tarif
                 else:
-                    biaya_total = int(durasi_menit+1) * tarif
+                    biaya_total = tarif * jam + ((tarif * 0.5) if menit > 30 else 0) 
+                # if durasi_menit <= 1:
+                #     biaya_total = tarif
+                # else:
+                #     biaya_total = int(durasi_menit+1) * tarif
 
                 jam_keluar = time.strftime("%H:%M:%S", time.localtime(waktu_keluar))
-                _, data_transaksi = self.riwayat.update_transaksi(plat_nomor, jam_keluar, f"{durasi_menit:.2f} Jam", biaya_total)
+                _, data_transaksi = self.riwayat.update_transaksi(plat_nomor, jam_keluar, durasi, biaya_total)
+                # _, data_transaksi = self.riwayat.update_transaksi(plat_nomor, jam_keluar, f"{durasi_menit:.2f} Jam", biaya_total)
 
                 while stack_sementara:
                     lantai.append(stack_sementara.pop())

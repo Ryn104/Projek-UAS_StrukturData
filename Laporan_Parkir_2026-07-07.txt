@@ -1,0 +1,21 @@
+==========================================================================================
+                             RIWAYAT TRANSAKSI PARKIR HARIAN
+==========================================================================================
+
+ No | Jenis  | Plat Nomor   | Masuk    | Keluar   | Durasi         | Biaya      | Status    
+------------------------------------------------------------------------------------------
+ 1  | Mobil  | D 1415 AJE   | 15:30:08 | 15:32:51 | 2 Jam 42 Menit | Rp12500    | Selesai   
+ 2  | Mobil  | AB 9912 AF   | 15:30:08 | -        | -              | -          | Parkir    
+ 3  | Motor  | Z 7731 UVW   | 15:30:19 | -        | -              | -          | Parkir    
+ 4  | Motor  | F 9123 VWH   | 15:30:21 | 15:33:25 | 3 Jam 4 Menit  | Rp6000     | Selesai   
+ 5  | Motor  | D 3197 AAM   | 15:30:24 | -        | -              | -          | Parkir    
+ 6  | Mobil  | B 1342 GHZ   | 15:30:27 | 15:34:34 | 4 Jam 6 Menit  | Rp20000    | Selesai   
+ 7  | Mobil  | B 5283 VCH   | 15:30:28 | -        | -              | -          | Parkir    
+ 8  | Mobil  | Z 2458 AAW   | 15:31:15 | 15:32:36 | 1 Jam 20 Menit | Rp5000     | Selesai   
+ 9  | Mobil  | M 8291 ADZ   | 15:31:16 | 15:34:07 | 2 Jam 51 Menit | Rp12500    | Selesai   
+ 10 | Mobil  | D 8241  AWM  | 15:34:58 | -        | -              | -          | Parkir    
+ 11 | Motor  | B 6689 VZX   | 15:35:04 | -        | -              | -          | Parkir    
+------------------------------------------------------------------------------------------
+Total Mobil Parkir : 7
+Total Motor Parkir : 4
+Total Pendapatan : Rp56000.00

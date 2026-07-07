@@ -64,6 +64,4 @@ python ProjekUAS_Kelompok6-GUI.py
 - Tambahan 50% tarif jika sisa waktu lebih dari 30 menit.
 
 ## 📸 Screenshot
-```markdown
 ![Dashboard](images/dashboard.png)
-```
